@@ -69,6 +69,10 @@ export async function POST(req: Request) {
 
     const newUser = await createUser(user);
 
+    console.log('user at clerk', newUser);
+  
+
+    
     if(newUser) {
       await clerkClient.users.updateUserMetadata(id, {
         publicMetadata: {
@@ -80,5 +84,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'OK', user: newUser })
   }
 
-  return new Response('', { status: 200 })
+  return new Response('server action implemnted', { status: 200 })
 }
