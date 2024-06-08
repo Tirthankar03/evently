@@ -22,7 +22,7 @@ export const createUser = async (user:CreateUserParams) => {
         //we want to pass the actual json data to the frontend, not necessarily the entire doc
         return JSON.parse(JSON.stringify(newUser))
     } catch (error) {
-        
+        console.error('error in creating user', error);
     }
  }
 
