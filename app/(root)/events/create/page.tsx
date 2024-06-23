@@ -9,6 +9,10 @@ const CreateEvent = () => {
 
   console.log('userID>>>>', userId);
   
+const MONGODB_URI = process.env.MONGODB_URI;
+console.log('MONGODB_URI:', MONGODB_URI); // Debug log
+
+
 
   return (
     <>
