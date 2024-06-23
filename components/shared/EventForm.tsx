@@ -1,8 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button";
 import {
@@ -35,6 +34,10 @@ type EventFormProps = {
 };
 
 const EventForm = ({ userId, type }: EventFormProps) => {
+  const MONGODB_URI = process.env.MONGODB_URI;
+  console.log('MONGODB_URI in client:', MONGODB_URI); // Debug log
+  
+ 
   const [files, setFiles] = useState<File[]>([]);
 
   const initialValues = eventDefaultValues;
@@ -53,7 +56,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
   }
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
@@ -228,7 +231,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                             <FormControl>
                               <div className="flex items-center">
                                 <label htmlFor="isFree" className="whitespace-nowrap pr-3 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Free Ticket</label>
-                                <Checkbox
+                                <Checkbox 
                                   onCheckedChange={field.onChange}
                                   checked={field.value}
                                 id="isFree" className="mr-2 h-5 w-5 border-2 border-primary-500" />

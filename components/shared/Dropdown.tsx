@@ -20,9 +20,10 @@ import {
   
 
 
-import { ICategory } from "@/lib/models/category.model"
-import { useState } from "react"
+import { ICategory } from "@/lib/database/models/category.model"
+import { startTransition, useEffect, useState } from "react"
 import { Input } from "../ui/input"
+import { createCategory, getAllCategories } from "@/lib/actions/category.actions"
 
 
 type DropdownProps = {
@@ -32,13 +33,36 @@ type DropdownProps = {
   
 
 const Dropdown = ({value, onChangeHandler}: DropdownProps) => {
-    const [categories, setCategories] = useState<ICategory[]>([
-    ])
+    const [categories, setCategories] = useState<ICategory[]>([])
 
 
-    const handleAddCategory = () => { 
+    const handleAddCategory = async () => { 
+      try {
+        //server action 
+          const category = await createCategory({ categoryName: newCategory.trim() });
+          setCategories((prevState) => [...prevState, category]);
+      } catch (error) {
+          console.error("Error adding category:", error);
+      }
+  };
 
-     }
+
+  // useEffect to fetch all the categories the moment we enter the page
+  useEffect(() => {
+
+    
+    const getCategories = async () => {
+      try {
+        const categoryList = await getAllCategories();
+        if (categoryList) setCategories(categoryList as ICategory[]);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    getCategories();
+  }, []);
+  
 
     const [newCategory, setNewCategory] = useState('')
   return (
@@ -65,8 +89,8 @@ const Dropdown = ({value, onChangeHandler}: DropdownProps) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              {/* <AlertDialogAction onClick={() => startTransition(handleAddCategory)}>Add</AlertDialogAction> */}
-              <AlertDialogAction>Continue</AlertDialogAction>
+              <AlertDialogAction onClick={() => startTransition(handleAddCategory)}>Add</AlertDialogAction>
+              {/* <AlertDialogAction>Continue</AlertDialogAction> */}
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

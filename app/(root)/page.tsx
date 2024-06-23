@@ -1,8 +1,33 @@
 import { Button } from "@/components/ui/button";
+import { connectToDatabase } from "@/lib/database";
+import Category from "@/lib/database/models/category.model";
 import Image from "next/image";
 import Link from "next/link";
 
+
+
+const testConnectionAndModel = async () => {
+  try {
+    console.log('Connecting to database...');
+    await connectToDatabase();
+    console.log('Database connected.');
+
+    console.log('Fetching categories...');
+    const categories = await Category.find();
+    console.log('Categories fetched:', categories);
+  } catch (err) {
+    console.error('Error:', err);
+  }
+}
+
+
+
+
 export default function Home() {
+
+  testConnectionAndModel();
+
+  
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
